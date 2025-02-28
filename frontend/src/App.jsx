@@ -5,6 +5,7 @@ import RecruiterChat from "../components/Recruiterchat";
 const App = () => {
   const [userType, setUserType] = useState(null);
   const [userId, setUserId] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <div>
@@ -16,7 +17,7 @@ const App = () => {
           <button onClick={() => setUserType("jobseeker")}>Job Seeker</button>
           <button onClick={() => setUserType("recruiter")}>Recruiter</button>
         </div>
-      ) : (
+      ) : !isLoggedIn ? (
         <div>
           <h3>Enter User ID</h3>
           <input
@@ -25,17 +26,19 @@ const App = () => {
             onChange={(e) => setUserId(e.target.value)}
             placeholder="Enter a unique ID (e.g., user123)"
           />
-          {userId && (
-            <>
-              <p>Logged in as: <strong>{userId}</strong> ({userType})</p>
-              {userType === "jobseeker" ? (
-                <JobSeekerChat userId={userId} />
-              ) : (
-                <RecruiterChat userId={userId} />
-              )}
-            </>
-          )}
+          <button onClick={() => setIsLoggedIn(true)} disabled={!userId.trim()}>
+            Login
+          </button>
         </div>
+      ) : (
+        <>
+          <p>Logged in as: <strong>{userId}</strong> ({userType})</p>
+          {userType === "jobseeker" ? (
+            <JobSeekerChat userId={userId} />
+          ) : (
+            <RecruiterChat userId={userId} />
+          )}
+        </>
       )}
     </div>
   );

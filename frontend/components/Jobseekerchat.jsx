@@ -10,17 +10,19 @@ const JobSeekerChat = ({ userId }) => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    socket.emit("registerUser", { userId, role: "jobseeker" });
-
+    if (userId) {
+      socket.emit("registerUser", { userId, role: "jobseeker" });
+    }
+  
     socket.on("updateUsers", ({ recruiters }) => {
       setRecruiters(recruiters);
     });
-
+  
     return () => {
       socket.off("updateUsers");
       socket.off("receiveMessage");
     };
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     if (selectedRecruiter) {
