@@ -20,7 +20,7 @@ const RecruiterChat = ({ userId }) => {
       socket.off("updateUsers");
       socket.off("receiveMessage");
     };
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     if (selectedJobSeeker) {
