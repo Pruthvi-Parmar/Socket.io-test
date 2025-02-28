@@ -1,26 +1,44 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import React, { useState } from "react";
 import JobSeekerChat from "../components/Jobseekerchat";
 import RecruiterChat from "../components/Recruiterchat";
 
 const App = () => {
-    return (
-        <Router>
-            <div>
-                <nav>
-                    <ul>
-                        <li><Link to="/jobseeker-chat">JobSeeker Chat</Link></li>
-                        <li><Link to="/recruiter-chat">Recruiter Chat</Link></li>
-                    </ul>
-                </nav>
+  const [userType, setUserType] = useState(null);
+  const [userId, setUserId] = useState("");
 
-                <Routes>
-                    <Route path="/jobseeker-chat" element={<JobSeekerChat />} />
-                    <Route path="/recruiter-chat" element={<RecruiterChat />} />
-                </Routes>
-            </div>
-        </Router>
-    );
+  return (
+    <div>
+      <h1>Chat Application</h1>
+
+      {!userType ? (
+        <div>
+          <h3>Select User Type</h3>
+          <button onClick={() => setUserType("jobseeker")}>Job Seeker</button>
+          <button onClick={() => setUserType("recruiter")}>Recruiter</button>
+        </div>
+      ) : (
+        <div>
+          <h3>Enter User ID</h3>
+          <input
+            type="text"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+            placeholder="Enter a unique ID (e.g., user123)"
+          />
+          {userId && (
+            <>
+              <p>Logged in as: <strong>{userId}</strong> ({userType})</p>
+              {userType === "jobseeker" ? (
+                <JobSeekerChat userId={userId} />
+              ) : (
+                <RecruiterChat userId={userId} />
+              )}
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default App;
